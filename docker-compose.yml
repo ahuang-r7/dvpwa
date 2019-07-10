@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  postgres:
+    container_name: postgres
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    ports:
+      - "5432:5432"
+    volumes: 
+      - database_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    container_name: redis
+    image: redis:5.0.5-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/var/lib/redis/data
+    entrypoint: redis-server --appendonly yes
+    restart: always 
+
+  sqli:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    ports:
+      - "8080:8080"
+    volumes: 
+      - .:/usr/src/app/
+    tty: true
+    command: tcell_agent run python run.py
+
+volumes: 
+  database_data: 
+    driver: local
+  redis-data:
+    driver: local
