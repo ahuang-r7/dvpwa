@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes: 
-      - database_data:/var/lib/postgresql/data
+      - 'database_data:/var/lib/postgresql/data'
     restart: always
 
   redis:
@@ -18,7 +18,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - redis-data:/var/lib/redis/data
+      - 'redis-data:/var/lib/redis/data'
     entrypoint: redis-server --appendonly yes
     restart: always 
 
@@ -34,7 +34,5 @@ services:
     command: tcell_agent run python run.py
 
 volumes: 
-  database_data: 
-    driver: local
+  database_data:
   redis-data:
-    driver: local
